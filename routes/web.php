@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +79,18 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-// Admin routes (future implementation)
+// Admin routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    // Admin routes will be added here
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/products', [AdminController::class, 'products'])->name('products');
+    Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
+    Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
+    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    
+    // Actions
+    Route::put('/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.updateStatus');
+    Route::put('/products/{id}/toggle', [AdminController::class, 'toggleProductStatus'])->name('products.toggle');
+    Route::delete('/products/{id}', [AdminController::class, 'deleteProduct'])->name('products.delete');
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('users.delete');
 });

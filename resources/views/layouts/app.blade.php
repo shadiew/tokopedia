@@ -122,6 +122,12 @@
                                 <li><a class="dropdown-item" href="{{ route('user.purchases') }}">
                                     <i class="fas fa-download me-2"></i> Pembelian
                                 </a></li>
+                                @if(Auth::user()->role === 'admin')
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    <i class="fas fa-crown me-2"></i> Admin Dashboard
+                                </a></li>
+                                @endif
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}" class="d-inline">
