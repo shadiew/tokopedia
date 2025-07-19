@@ -104,6 +104,6 @@ class CartController extends Controller
     public function getCartCount()
     {
         $cart = Session::get('cart', []);
-        return count($cart);
+        return response()->json(['count' => count($cart)]);
     }
 }
