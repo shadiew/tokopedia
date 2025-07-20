@@ -87,6 +87,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
     Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
     Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
+    Route::post('/settings', [AdminController::class, 'updateSettings'])->name('settings.update');
     
     // Actions
     Route::put('/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('orders.updateStatus');

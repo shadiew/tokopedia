@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -213,5 +214,41 @@ class AdminController extends Controller
             'topCategories',
             'userRegistrations'
         ));
+    }
+
+    /**
+     * Display settings form
+     */
+    public function settings()
+    {
+        $settings = Settings::getSettings();
+        return view('admin.settings', compact('settings'));
+    }
+
+    /**
+     * Update settings data
+     */
+    public function updateSettings(Request $request)
+    {
+        $settings = Settings::getSettings();
+        $data = $request->validate([
+            'short_title' => 'nullable|string|max:255',
+            'title' => 'nullable|string|max:255',
+            'favicon' => 'nullable|string|max:255',
+            'logo' => 'nullable|string|max:255',
+            'google_analytics' => 'nullable|string',
+            'google_search' => 'nullable|string',
+            'embed_code' => 'nullable|string',
+            'tripay_merchant' => 'nullable|string|max:255',
+            'tripay_apikey' => 'nullable|string|max:255',
+            'tripay_privatekey' => 'nullable|string|max:255',
+            'tripay_action' => 'nullable|boolean',
+            'whatsapp_appkey' => 'nullable|string|max:255',
+            'whatsapp_authkey' => 'nullable|string|max:255',
+        ]);
+        if ($settings) {
+            $settings->update($data);
+        }
+        return redirect()->route('admin.settings')->with('success', 'Pengaturan berhasil diperbarui.');
     }
 } 
