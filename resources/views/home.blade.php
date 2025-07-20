@@ -20,9 +20,11 @@
                     <a href="{{ route('store') }}" class="btn btn-light btn-lg">
                         <i class="fas fa-store me-2"></i> Jelajahi Toko
                     </a>
+                    @guest
                     <a href="{{ route('register') }}" class="btn btn-outline-light btn-lg">
                         <i class="fas fa-user-plus me-2"></i> Daftar Gratis
                     </a>
+                    @endguest
                 </div>
             </div>
             <div class="col-lg-6 text-center">
@@ -32,58 +34,7 @@
     </div>
 </section>
 
-<!-- Features Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row text-center mb-5">
-            <div class="col-12">
-                <h2 class="fw-bold">Mengapa Memilih Kami?</h2>
-                <p class="text-muted">Keunggulan platform digital download kami</p>
-            </div>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="fas fa-download fa-2x"></i>
-                        </div>
-                        <h5 class="card-title">Download Instan</h5>
-                        <p class="card-text text-muted">
-                            Download langsung setelah pembayaran berhasil. Tidak perlu menunggu lama.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="bg-success bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="fas fa-shield-alt fa-2x"></i>
-                        </div>
-                        <h5 class="card-title">Aman & Terpercaya</h5>
-                        <p class="card-text text-muted">
-                            Pembayaran aman dengan berbagai metode. Data Anda terlindungi dengan baik.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="card-body text-center p-4">
-                        <div class="bg-warning bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                            <i class="fas fa-headset fa-2x"></i>
-                        </div>
-                        <h5 class="card-title">Layanan 24/7</h5>
-                        <p class="card-text text-muted">
-                            Tim support kami siap membantu Anda kapan saja. Layanan pelanggan terbaik.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Featured Products Section -->
 @if($featuredProducts->count() > 0)
@@ -212,21 +163,5 @@
 </section>
 @endif
 
-<!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-3">Siap Memulai?</h2>
-        <p class="lead mb-4">
-            Bergabunglah dengan ribuan pengguna yang telah mempercayai platform kami
-        </p>
-        <div class="d-flex gap-3 justify-content-center">
-            <a href="{{ route('register') }}" class="btn btn-light btn-lg">
-                <i class="fas fa-user-plus me-2"></i> Daftar Sekarang
-            </a>
-            <a href="{{ route('store') }}" class="btn btn-outline-light btn-lg">
-                <i class="fas fa-store me-2"></i> Jelajahi Produk
-            </a>
-        </div>
-    </div>
-</section>
+
 @endsection 

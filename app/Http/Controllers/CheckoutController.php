@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use App\Services\TripayService;
 
 class CheckoutController extends Controller
 {
@@ -35,8 +36,9 @@ class CheckoutController extends Controller
             $product->quantity = $quantity;
             $product->subtotal = $subtotal;
         }
-
-        return view('checkout.index', compact('products', 'total'));
+        $tripayService = new TripayService();
+        $channels = $tripayService->getChannels();
+        return view('checkout.index', compact('products', 'total', 'channels'));
     }
 
     /**
@@ -49,26 +51,22 @@ class CheckoutController extends Controller
             'billing_email' => 'required|email',
             'billing_phone' => 'nullable|string|max:20',
             'billing_address' => 'nullable|string',
-            'payment_method' => 'required|in:bank_transfer,credit_card,paypal',
+            'payment_method' => 'required', // validasi channel Tripay
         ]);
 
         $cart = Session::get('cart', []);
-        
         if (empty($cart)) {
             return redirect()->route('cart.index')->with('error', 'Keranjang belanja kosong.');
         }
-
         $productIds = array_keys($cart);
         $products = Product::whereIn('id', $productIds)->get();
-        
         $total = 0;
         $orderItems = [];
-        
+        $tripayItems = [];
         foreach ($products as $product) {
             $quantity = $cart[$product->id];
             $subtotal = $product->price * $quantity;
             $total += $subtotal;
-            
             $orderItems[] = [
                 'product_id' => $product->id,
                 'product_name' => $product->name,
@@ -76,12 +74,33 @@ class CheckoutController extends Controller
                 'quantity' => $quantity,
                 'subtotal' => $subtotal,
             ];
+            $tripayItems[] = [
+                'name' => $product->name,
+                'price' => (int) $product->price,
+                'quantity' => (int) $quantity,
+            ];
         }
-
+        $tripayService = new \App\Services\TripayService();
+        $invoice = 'INV-' . date('md') . strtoupper(uniqid());
+        $signature = $tripayService->generateSignature($invoice, $total);
+        $payload = [
+            'method' => $request->payment_method,
+            'merchant_ref' => $invoice,
+            'amount' => $total,
+            'customer_name' => $request->billing_name,
+            'customer_email' => $request->billing_email,
+            'customer_phone' => $request->billing_phone,
+            'order_items' => $tripayItems, // FIX: harus array
+            'return_url' => route('user.orders'),
+            'expired_time' => now()->addHours(24)->timestamp,
+            'signature' => $signature,
+        ];
+        $tripayResponse = $tripayService->createTransaction($payload);
+        if (!$tripayResponse || empty($tripayResponse['success'])) {
+            return redirect()->back()->with('error', 'Gagal membuat transaksi pembayaran.');
+        }
         try {
             DB::beginTransaction();
-
-            // Create order
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'total_amount' => $total,
@@ -94,33 +113,23 @@ class CheckoutController extends Controller
                 'billing_email' => $request->billing_email,
                 'billing_phone' => $request->billing_phone,
                 'billing_address' => $request->billing_address,
+                'notes' => $invoice,
             ]);
-
-            // Create order items
             foreach ($orderItems as $item) {
                 $order->orderItems()->create($item);
             }
-
-            // Create payment record
             Payment::create([
                 'order_id' => $order->id,
                 'payment_method' => $request->payment_method,
                 'amount' => $total,
                 'status' => 'pending',
+                'transaction_id' => $tripayResponse['data']['reference'] ?? null,
+                'payment_details' => json_encode($tripayResponse['data'] ?? []),
             ]);
-
             DB::commit();
-
-            // Clear cart
             Session::forget('cart');
-
-            // Redirect based on payment method
-            if ($request->payment_method === 'bank_transfer') {
-                return redirect()->route('checkout.pending', $order->order_number);
-            } else {
-                return redirect()->route('checkout.success', $order->order_number);
-            }
-
+            // Redirect ke halaman pembayaran Tripay
+            return redirect($tripayResponse['data']['checkout_url'] ?? route('checkout.pending', $order->order_number));
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memproses pesanan.');

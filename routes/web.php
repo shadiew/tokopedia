@@ -94,3 +94,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/products/{id}', [AdminController::class, 'deleteProduct'])->name('products.delete');
     Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('users.delete');
 });
+
+// Tripay callback
+Route::post('/callback/tripay', [\App\Http\Controllers\TripayController::class, 'callback']);

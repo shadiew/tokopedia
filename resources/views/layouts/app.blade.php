@@ -78,11 +78,7 @@
                             <li><a class="dropdown-item" href="{{ route('store') }}">Semua Kategori</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">
-                            <i class="fas fa-envelope me-1"></i> Kontak
-                        </a>
-                    </li>
+
                 </ul>
                 
                 <!-- Search Form -->
@@ -184,7 +180,7 @@
                     <h5 class="text-white mb-3">
                         <i class="fas fa-download me-2"></i> DigitalStore
                     </h5>
-                    <p class="text-muted">
+                    <p class="text-white">
                         Platform toko digital download terpercaya dengan produk berkualitas tinggi dan layanan pelanggan yang memuaskan.
                     </p>
                     <div class="social-links">
@@ -198,20 +194,20 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="text-white mb-3">Produk</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{{ route('store') }}" class="text-muted text-decoration-none">Semua Produk</a></li>
-                        <li><a href="{{ route('store') }}?sort=popular" class="text-muted text-decoration-none">Terpopuler</a></li>
-                        <li><a href="{{ route('store') }}?sort=latest" class="text-muted text-decoration-none">Terbaru</a></li>
-                        <li><a href="{{ route('store') }}?sort=price_low" class="text-muted text-decoration-none">Harga Terendah</a></li>
+                        <li><a href="{{ route('store') }}" class="text-white text-decoration-none">Semua Produk</a></li>
+                        <li><a href="{{ route('store') }}?sort=popular" class="text-white text-decoration-none">Terpopuler</a></li>
+                        <li><a href="{{ route('store') }}?sort=latest" class="text-white text-decoration-none">Terbaru</a></li>
+                        <li><a href="{{ route('store') }}?sort=price_low" class="text-white text-decoration-none">Harga Terendah</a></li>
                     </ul>
                 </div>
                 
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="text-white mb-3">Layanan</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{{ route('contact') }}" class="text-muted text-decoration-none">Kontak Kami</a></li>
-                        <li><a href="{{ route('privacy') }}" class="text-muted text-decoration-none">Privasi</a></li>
-                        <li><a href="{{ route('terms') }}" class="text-muted text-decoration-none">Syarat & Ketentuan</a></li>
-                        <li><a href="{{ route('about') }}" class="text-muted text-decoration-none">Tentang Kami</a></li>
+                        <li><a href="{{ route('contact') }}" class="text-white text-decoration-none">Kontak Kami</a></li>
+                        <li><a href="{{ route('privacy') }}" class="text-white text-decoration-none">Privasi</a></li>
+                        <li><a href="{{ route('terms') }}" class="text-white text-decoration-none">Syarat & Ketentuan</a></li>
+                        <li><a href="{{ route('about') }}" class="text-white text-decoration-none">Tentang Kami</a></li>
                     </ul>
                 </div>
                 
@@ -219,13 +215,13 @@
                     <h6 class="text-white mb-3">Akun</h6>
                     <ul class="list-unstyled">
                         @auth
-                            <li><a href="{{ route('user.dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
-                            <li><a href="{{ route('user.profile') }}" class="text-muted text-decoration-none">Profil</a></li>
-                            <li><a href="{{ route('user.orders') }}" class="text-muted text-decoration-none">Pesanan</a></li>
-                            <li><a href="{{ route('user.purchases') }}" class="text-muted text-decoration-none">Pembelian</a></li>
+                            <li><a href="{{ route('user.dashboard') }}" class="text-white text-decoration-none">Dashboard</a></li>
+                            <li><a href="{{ route('user.profile') }}" class="text-white text-decoration-none">Profil</a></li>
+                            <li><a href="{{ route('user.orders') }}" class="text-white text-decoration-none">Pesanan</a></li>
+                            <li><a href="{{ route('user.purchases') }}" class="text-white text-decoration-none">Pembelian</a></li>
                         @else
-                            <li><a href="{{ route('login') }}" class="text-muted text-decoration-none">Masuk</a></li>
-                            <li><a href="{{ route('register') }}" class="text-muted text-decoration-none">Daftar</a></li>
+                            <li><a href="{{ route('login') }}" class="text-white text-decoration-none">Masuk</a></li>
+                            <li><a href="{{ route('register') }}" class="text-white text-decoration-none">Daftar</a></li>
                         @endauth
                     </ul>
                 </div>
@@ -233,10 +229,10 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="text-white mb-3">Pembayaran</h6>
                     <ul class="list-unstyled">
-                        <li><span class="text-muted">Bank Transfer</span></li>
-                        <li><span class="text-muted">Credit Card</span></li>
-                        <li><span class="text-muted">PayPal</span></li>
-                        <li><span class="text-muted">E-Wallet</span></li>
+                        <li><span class="text-white">Bank Transfer</span></li>
+                        <li><span class="text-white">Credit Card</span></li>
+                        <li><span class="text-white">PayPal</span></li>
+                        <li><span class="text-white">E-Wallet</span></li>
                     </ul>
                 </div>
             </div>
@@ -245,12 +241,12 @@
             
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="text-muted mb-0">
+                    <p class="text-white mb-0">
                         &copy; {{ date('Y') }} DigitalStore. All rights reserved.
                     </p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="text-muted mb-0">
+                    <p class="text-white mb-0">
                         Made with <i class="fas fa-heart text-danger"></i> in Indonesia
                     </p>
                 </div>

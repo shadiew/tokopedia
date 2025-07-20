@@ -113,43 +113,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Payment Methods -->
-                <div class="card mt-3">
-                    <div class="card-header">
-                        <h6 class="mb-0">
-                            <i class="fas fa-credit-card me-2"></i>Metode Pembayaran
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <div class="border rounded p-2 text-center">
-                                    <i class="fas fa-university fa-2x text-primary mb-2"></i>
-                                    <div class="small">Bank Transfer</div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="border rounded p-2 text-center">
-                                    <i class="fab fa-cc-visa fa-2x text-primary mb-2"></i>
-                                    <div class="small">Credit Card</div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="border rounded p-2 text-center">
-                                    <i class="fab fa-paypal fa-2x text-primary mb-2"></i>
-                                    <div class="small">PayPal</div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="border rounded p-2 text-center">
-                                    <i class="fas fa-wallet fa-2x text-primary mb-2"></i>
-                                    <div class="small">E-Wallet</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     @else

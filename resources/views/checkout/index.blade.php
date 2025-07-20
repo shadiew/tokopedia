@@ -57,16 +57,19 @@
                                 <label for="payment_method" class="form-label">Metode Pembayaran *</label>
                                 <select class="form-select @error('payment_method') is-invalid @enderror" id="payment_method" name="payment_method" required>
                                     <option value="">Pilih metode pembayaran</option>
-                                    <option value="bank_transfer" {{ old('payment_method') == 'bank_transfer' ? 'selected' : '' }}>
-                                        Bank Transfer
-                                    </option>
-                                    <option value="credit_card" {{ old('payment_method') == 'credit_card' ? 'selected' : '' }}>
-                                        Credit Card
-                                    </option>
-                                    <option value="paypal" {{ old('payment_method') == 'paypal' ? 'selected' : '' }}>
-                                        PayPal
-                                    </option>
+                                    @if(isset($channels) && count($channels))
+                                        @foreach($channels as $channel)
+                                            @if($channel['active'])
+                                                <option value="{{ $channel['code'] }}" data-icon="{{ $channel['icon_url'] }}" {{ old('payment_method') == $channel['code'] ? 'selected' : '' }}>
+                                                    {{ $channel['name'] }}
+                                                </option>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <option value="" disabled>Tidak ada channel pembayaran tersedia</option>
+                                    @endif
                                 </select>
+                                <div id="channel-icon-preview" class="mt-2"></div>
                                 @error('payment_method')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -149,6 +152,13 @@
                         </div>
                         
                         <div class="d-grid gap-2">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="agree_terms" required>
+                                <label class="form-check-label small" for="agree_terms">
+                                    Saya setuju dengan <a href="{{ route('terms') }}" target="_blank">Syarat & Ketentuan</a> dan 
+                                    <a href="{{ route('privacy') }}" target="_blank">Kebijakan Privasi</a>
+                                </label>
+                            </div>
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="fas fa-lock me-2"></i>Bayar Sekarang
                             </button>
@@ -202,19 +212,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Terms -->
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="agree_terms" required>
-                            <label class="form-check-label small" for="agree_terms">
-                                Saya setuju dengan <a href="{{ route('terms') }}" target="_blank">Syarat & Ketentuan</a> dan 
-                                <a href="{{ route('privacy') }}" target="_blank">Kebijakan Privasi</a>
-                            </label>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </form>
@@ -224,6 +221,21 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Tampilkan icon channel saat dipilih
+    const select = document.getElementById('payment_method');
+    const iconPreview = document.getElementById('channel-icon-preview');
+    function updateIcon() {
+        const selected = select.options[select.selectedIndex];
+        const icon = selected.getAttribute('data-icon');
+        if (icon) {
+            iconPreview.innerHTML = `<img src="${icon}" alt="icon" style="height:32px;vertical-align:middle;">`;
+        } else {
+            iconPreview.innerHTML = '';
+        }
+    }
+    select.addEventListener('change', updateIcon);
+    updateIcon();
+
     // Form validation
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
