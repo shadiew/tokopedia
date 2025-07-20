@@ -114,6 +114,9 @@ class CheckoutController extends Controller
                 'billing_phone' => $request->billing_phone,
                 'billing_address' => $request->billing_address,
                 'notes' => $invoice,
+                'checkout_url' => $tripayResponse['data']['checkout_url'] ?? null,
+                'qr_string' => $tripayResponse['data']['qr_string'] ?? null,
+                'qr_url' => $tripayResponse['data']['qr_url'] ?? null,
             ]);
             foreach ($orderItems as $item) {
                 $order->orderItems()->create($item);

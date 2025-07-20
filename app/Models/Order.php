@@ -24,6 +24,9 @@ class Order extends Model
         'billing_email',
         'billing_phone',
         'billing_address',
+        'checkout_url',
+        'qr_string',
+        'qr_url',
     ];
 
     protected $casts = [

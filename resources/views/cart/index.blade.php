@@ -36,34 +36,60 @@
                                 <small class="text-muted">{{ $product->formatted_file_size }}</small>
                             </div>
                             <div class="col-md-2">
-                                <div class="input-group input-group-sm">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity({{ $product->id }}, -1)">
+                                <form method="POST" action="{{ route('cart.update', $product->id) }}" class="d-flex align-items-center gap-1">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="btn btn-outline-secondary btn-sm" type="submit" name="action" value="decrement">
                                         <i class="fas fa-minus"></i>
                                     </button>
-                                    <input type="number" class="form-control text-center quantity-input" 
-                                           id="quantity-{{ $product->id }}" value="{{ $product->quantity }}" 
-                                           min="1" max="10" style="width: 60px;">
-                                    <button class="btn btn-outline-secondary" type="button" onclick="updateQuantity({{ $product->id }}, 1)">
+                                    <input type="number" name="quantity" class="form-control text-center form-control-sm" value="{{ $product->quantity }}" min="1" max="10" style="width: 40px;">
+                                    <button class="btn btn-outline-secondary btn-sm" type="submit" name="action" value="increment">
                                         <i class="fas fa-plus"></i>
                                     </button>
-                                </div>
+                                </form>
                             </div>
                             <div class="col-md-2 text-center">
                                 <span class="fw-bold">{{ $product->formatted_subtotal }}</span>
                             </div>
                             <div class="col-md-2 text-end">
-                                <button class="btn btn-outline-danger btn-sm" onclick="removeItem({{ $product->id }})">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <form method="POST" action="{{ route('cart.remove', $product->id) }}" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                         @endforeach
                         
                         <div class="text-end">
-                            <a href="{{ route('cart.clear') }}" class="btn btn-outline-secondary" 
-                               onclick="return confirm('Apakah Anda yakin ingin mengosongkan keranjang?')">
+                            <!-- Tombol trigger modal -->
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalClearCart">
                                 <i class="fas fa-trash me-2"></i>Kosongkan Keranjang
-                            </a>
+                            </button>
+                        </div>
+                        <!-- Modal Bootstrap 5 -->
+                        <div class="modal fade" id="modalClearCart" tabindex="-1" aria-labelledby="modalClearCartLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalClearCartLabel">Konfirmasi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                              </div>
+                              <div class="modal-body">
+                                Apakah Anda yakin ingin mengosongkan keranjang?
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <form method="POST" action="{{ route('cart.clear') }}" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Kosongkan</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                     </div>
                 </div>

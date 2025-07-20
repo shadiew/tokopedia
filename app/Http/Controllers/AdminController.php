@@ -28,7 +28,7 @@ class AdminController extends Controller
         ];
 
         // Get recent orders
-        $recentOrders = Order::with(['user', 'items.product'])
+        $recentOrders = Order::with(['user', 'orderItems.product'])
             ->latest()
             ->take(10)
             ->get();
@@ -98,7 +98,7 @@ class AdminController extends Controller
      */
     public function orders()
     {
-        $orders = Order::with(['user', 'items.product'])
+        $orders = Order::with(['user', 'orderItems.product'])
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 

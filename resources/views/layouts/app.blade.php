@@ -96,7 +96,7 @@
                     <li class="nav-item">
                         <a class="nav-link position-relative" href="{{ route('cart.index') }}">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="cart-badge" style="display: none;">0</span>
+                            <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.75rem;display:none;">0</span>
                         </a>
                     </li>
                     
@@ -255,6 +255,22 @@
     </footer>
 
     <!-- Scripts -->
-    @stack('scripts')
+    @push('scripts')
+    <script>
+    function updateCartCount() {
+        fetch('/cart/count')
+            .then(response => response.json())
+            .then(data => {
+                const cartCountElement = document.getElementById('cart-count');
+                if (cartCountElement) {
+                    cartCountElement.textContent = data.count;
+                    cartCountElement.style.display = (data.count > 0) ? '' : 'none';
+                }
+            });
+    }
+    // Panggil saat halaman load
+    updateCartCount();
+    </script>
+    @endpush
 </body>
 </html> 
