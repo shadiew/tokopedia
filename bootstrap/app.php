@@ -13,7 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'csrf' => \App\Http\Middleware\VerifyCsrfToken::class, // pastikan custom CSRF digunakan
         ]);
+        // Hapus append VerifyCsrfToken agar pengecualian CSRF berjalan normal
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
