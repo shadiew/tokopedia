@@ -19,6 +19,17 @@ class HomeController extends Controller
         $latestProducts = Product::active()->latest()->take(8)->get();
         $categories = Category::active()->withCount('products')->take(6)->get();
 
+        // Fallback: jika kosong, pakai produk terbaru
+        if ($featuredProducts->isEmpty()) {
+            $featuredProducts = $latestProducts;
+        }
+        if ($recommendedProducts->isEmpty()) {
+            $recommendedProducts = $latestProducts;
+        }
+        if ($bestsellerProducts->isEmpty()) {
+            $bestsellerProducts = $latestProducts;
+        }
+
         return view('home', compact(
             'featuredProducts',
             'recommendedProducts', 

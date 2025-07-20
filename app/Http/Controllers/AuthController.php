@@ -57,35 +57,46 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string|max:20',
-            'role' => 'required|in:user,member',
-            'address' => 'required|string|max:500',
-            'password' => ['required', 'confirmed', PasswordRules::min(8)
-                ->letters()
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-            ],
-            'terms' => 'required|accepted',
-        ]);
+        try {
+            \Log::info('Registration attempt for email: ' . $request->email);
+            
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => ['required', 'confirmed', PasswordRules::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                ],
+                'terms' => 'required|accepted',
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'role' => $request->role,
-            'address' => $request->address,
-            'password' => Hash::make($request->password),
-            'email_verified_at' => now(), // Auto verify for demo
-        ]);
+            \Log::info('Validation passed for email: ' . $request->email);
 
-        Auth::login($user);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => 'customer',
+                'password' => Hash::make($request->password),
+                'email_verified_at' => now(), // Auto verify for demo
+            ]);
 
-        return redirect()->route('user.dashboard')
-            ->with('success', 'Akun berhasil dibuat! Selamat datang di Toko Digital Download.');
+            \Log::info('User created successfully with ID: ' . $user->id);
+
+            Auth::login($user);
+
+            \Log::info('User logged in successfully');
+
+            return redirect()->route('user.dashboard')
+                ->with('success', 'Akun berhasil dibuat! Selamat datang di Toko Digital Download.');
+                
+        } catch (\Exception $e) {
+            \Log::error('Registration error: ' . $e->getMessage());
+            \Log::error('Registration error trace: ' . $e->getTraceAsString());
+            return back()->withErrors(['email' => 'Terjadi kesalahan saat mendaftar. Silakan coba lagi.'])
+                        ->withInput($request->except('password', 'password_confirmation'));
+        }
     }
 
     /**

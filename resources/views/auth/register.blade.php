@@ -21,6 +21,16 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
 
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
@@ -43,49 +53,6 @@
                             <input type="email" class="form-control @error('email') is-invalid @enderror" 
                                    id="email" name="email" value="{{ old('email') }}" required>
                             @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">
-                                        <i class="fas fa-phone me-1"></i> Nomor Telepon
-                                    </label>
-                                    <input type="tel" class="form-control @error('phone') is-invalid @enderror" 
-                                           id="phone" name="phone" value="{{ old('phone') }}" required>
-                                    @error('phone')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="role" class="form-label">
-                                        <i class="fas fa-users me-1"></i> Tipe Akun
-                                    </label>
-                                    <select class="form-select @error('role') is-invalid @enderror" 
-                                            id="role" name="role" required>
-                                        <option value="">Pilih tipe akun</option>
-                                        <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                                        <option value="member" {{ old('role') == 'member' ? 'selected' : '' }}>Member</option>
-                                    </select>
-                                    @error('role')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="address" class="form-label">
-                                <i class="fas fa-map-marker-alt me-1"></i> Alamat
-                            </label>
-                            <textarea class="form-control @error('address') is-invalid @enderror" 
-                                      id="address" name="address" rows="3" required>{{ old('address') }}</textarea>
-                            @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

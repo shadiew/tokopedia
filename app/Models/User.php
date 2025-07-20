@@ -26,6 +26,7 @@ class User extends Authenticatable
         'address',
         'avatar',
         'is_active',
+        'email_verified_at',
     ];
 
     /**
@@ -61,19 +62,19 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user is customer
+     */
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
+    }
+
+    /**
      * Check if user is admin
      */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
-    }
-
-    /**
-     * Check if user is member
-     */
-    public function isMember(): bool
-    {
-        return $this->role === 'member';
     }
 
     /**
